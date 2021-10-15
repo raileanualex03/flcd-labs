@@ -4,10 +4,10 @@ from collections import deque
 
 class SymbolTable():
 
-    def __init__(self, bucketsNumber):
-        self.bucketsNumber = bucketsNumber
+    def __init__(self):
+        self.bucketsNumber = 37
         self.buckets = []
-        for i in range(bucketsNumber) :
+        for i in range(self.bucketsNumber) :
             self.buckets.append(deque())
 
     def getHashValue(self, element):
@@ -20,15 +20,28 @@ class SymbolTable():
     	hashValue = self.getHashValue(element)
     	for i in range(len(self.buckets[hashValue])):
     		if self.buckets[hashValue][i] == element:
-    			return (i, hashValue)
+    			return (hashValue, i)
 
     	return (-1, -1)
 
     def add(self, element):
-    	if (search(element) == (-1, -1)):
-    		return (-1, -1)
+    	if (self.search(element) != (-1, -1)):
+    		return self.search(element)
     	hashValue = self.getHashValue(element)
     	self.buckets[hashValue].append(element)
 
-    	return (len(self.buckets[hashValue]), element)
+    	return (hashValue, len(self.buckets[hashValue]) - 1)
 
+
+def main():
+	st = SymbolTable()
+	print(st.add('alex'))
+	assert st.search('alex') == (19, 0)
+
+	print(st.add('alex'))
+	assert st.search('alex') == (19, 0)
+
+	print(st.add('test'))
+	assert st.search('alex') == (19, 0)
+
+main()

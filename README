@@ -1,0 +1,6 @@
+Symbol Table DOC
+
+
+
+BucketsNumber is a number that will decide how many buckets will be found in the list.
+Each bucket is a deque.
