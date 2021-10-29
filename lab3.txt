@@ -1,0 +1,20 @@
+https://github.com/raileanualex03/flcd-labs
+
+Symbol Table DOC
+
+
+
+BucketsNumber is a number that will decide how many buckets will be found in the list.
+
+Each bucket is a deque.
+
+search(element) -> checks if there is an existing element with this value.
+                -> if the element already exists, it will return the pair (hashValue, index)
+                   where hashValue is the hash computed for that element and index is the position in that deque.
+                -> if no element exists, it will return (-1, -1)
+
+
+addElement(element):
+        -> checks if the element already exists: if it exists, it will return its position from the search method.
+        -> if this element doesn't exist, it will append the element at the end of the bucket.
+        

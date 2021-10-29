@@ -1,47 +1,40 @@
-import string
-from collections import deque
+from symbolTable import SymbolTable
+from pif  import ProgramInternalForm
+from scanner import Scanner
+from tokens import *
 
+if __name__ == '__main__':
+    #file = open('firstExercise', 'r')
+    file = open('secondExercise', 'r')
+    st = SymbolTable()
+    pif = ProgramInternalForm()
 
-class SymbolTable():
+    line_index = 0
+    for line in file:
+        line_index += 1
 
-    def __init__(self):
-        self.bucketsNumber = 37
-        self.buckets = []
-        for i in range(self.bucketsNumber) :
-            self.buckets.append(deque())
+        if line[-1] == '\n':
+            line = line[0:-1]
 
-    def getHashValue(self, element):
-        sum = 0
-        for character in element:
-            sum = sum + ord(character)
-        return sum % self.bucketsNumber
+        for token in Scanner.getTokensFromLine(line):
+            if token == ' ':
+                continue
+            if token in OPERATORS_SEPARATORS_WORDS:
+                pif.add(token, -1)
+            elif Scanner.isIdentifier(token):
+                pif.add('identifier', st.add(token))
+            elif Scanner.isConstant(token):
+                pif.add('constant', st.add(token))
+            else:
+                raise ValueError(f"Unknown token '{token}' at line {line_index}!")
 
-    def search(self, element):
-    	hashValue = self.getHashValue(element)
-    	for i in range(len(self.buckets[hashValue])):
-    		if self.buckets[hashValue][i] == element:
-    			return (hashValue, i)
+    print("PIF{\n")
+    for element in pif.get_data():
+        print(f"{element[0]} ---- {element[1]}\n")
+    print("}\n")
 
-    	return (-1, -1)
+    print("Symbol table: ")
+    for element in st.buckets:
+        if (len(element) != 0):
+            print(f"({element})")
 
-    def add(self, element):
-    	if (self.search(element) != (-1, -1)):
-    		return self.search(element)
-    	hashValue = self.getHashValue(element)
-    	self.buckets[hashValue].append(element)
-
-    	return (hashValue, len(self.buckets[hashValue]) - 1)
-
-
-def main():
-	st = SymbolTable()
-	print(st.add('alex'))
-	assert st.search('alex') == (19, 0)
-
-	print(st.add('alex'))
-	assert st.search('alex') == (19, 0)
-
-	print(st.add('test'))
-	assert st.search('alex') == (19, 0)
-
-main()

@@ -1,0 +1,13 @@
+ fct main() => {
+   define proposition: string
+   define wordsInProposition: string[]
+   define 1test: string;
+
+   read(proposition, keyboard)
+
+   print("test)
+
+   wordsInProposition = split(proposition, ` `)
+
+   return wordsInProposition
+ }
