@@ -30,6 +30,10 @@ class Grammar:
                         return False
         return True
 
+class Menu:
+    def __init__(self, grammar):
+        self.grammar = grammar
+
     def print_menu(self):
         print('Please choose an option: \n'
               '\t1. show non terminals\n'
@@ -41,19 +45,19 @@ class Grammar:
               '\tx. quit\n')
 
     def show_non_terminals(self):
-        print('The non terminals: ' + str(self.non_terminal_symbols))
+        print('The non terminals: ' + str(self.grammar.non_terminal_symbols))
 
     def show_terminals(self):
-        print('The terminals: ' + str(self.terminal_symbols))
+        print('The terminals: ' + str(self.grammar.terminal_symbols))
 
     def show_starting_symbol(self):
-        print('The starting symbol: ' + str(self.start_symbol))
+        print('The starting symbol: ' + str(self.grammar.start_symbol))
 
     def show_productions(self):
         toPrint = ""
-        print(self.productions)
-        for symbol in self.productions:
-            productions_for_symbol = self.productions[symbol]
+        print(self.grammar.productions)
+        for symbol in self.grammar.productions:
+            productions_for_symbol = self.grammar.productions[symbol]
             toPrint += symbol + " -> "
             for production in productions_for_symbol:
                 toPrint += production + " | "
@@ -63,17 +67,17 @@ class Grammar:
     def show_product_for_symbol(self):
         symbol = input('The given symbol is: ')
         toPrint = ""
-        productions_for_symbol = self.productions[symbol]
+        productions_for_symbol = self.grammar.productions[symbol]
         for production in productions_for_symbol:
             toPrint += symbol + " -> " + production + "\n\t"
         print('The productions for symbol ' + symbol + ' : \n\t' + toPrint)    
 
     def show_cfg(self):
-        result = self.check_if_cfg()
+        result = self.grammar.check_if_cfg()
         isCFG = "is" if result else "is not"
         print('The given grammar ' + isCFG + ' a cfg')
 
-    def menu(self):
+    def start(self):
         options = {
             1: self.show_non_terminals,
             2: self.show_terminals,
@@ -83,7 +87,6 @@ class Grammar:
             6: self.show_cfg
         }
 
-        isDone = False
         print('Welcome to Lab5!\n')
         while True:
             self.print_menu()
@@ -100,4 +103,5 @@ class Grammar:
 
 if __name__ == '__main__':
     grammar = Grammar('g1.txt')
-    grammar.menu()
+    menu = Menu(grammar)
+    menu.start()
